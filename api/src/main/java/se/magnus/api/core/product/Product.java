@@ -1,5 +1,8 @@
 package se.magnus.api.core.product;
 
+import lombok.Getter;
+
+@Getter
 public class Product {
     private final int productId;
     private final String name;
@@ -18,21 +21,5 @@ public class Product {
         this.name = name;
         this.weight = weight;
         this.serviceAddress = serviceAddress;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public String getServiceAddress() {
-        return serviceAddress;
     }
 }
