@@ -1,6 +1,6 @@
 server:
   port: 7001
-server.web.error.include-message: always
+spring.web.error.include-message: always
 
 app:
   product-service:
