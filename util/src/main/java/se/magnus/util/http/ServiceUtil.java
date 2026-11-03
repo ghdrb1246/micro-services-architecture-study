@@ -15,7 +15,7 @@ public class ServiceUtil {
 
     private String serviceAddress = null;
 
-    public ServiceUtil(@Value("${server.port:8080}") String port) {
+    public ServiceUtil(@Value("${server.port}") String port) {
 
         this.port = port;
     }
