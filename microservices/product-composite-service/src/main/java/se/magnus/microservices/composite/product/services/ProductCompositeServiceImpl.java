@@ -1,7 +1,7 @@
 package se.magnus.microservices.composite.product.services;
 
 import org.springframework.web.bind.annotation.RestController;
-import se.magnus.api.composite.*;
+import se.magnus.api.composite.product.*;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.core.review.Review;
