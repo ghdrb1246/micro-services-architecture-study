@@ -23,6 +23,8 @@ dependencies {
 
 	implementation 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation 'org.springdoc:springdoc-openapi-starter-common:3.0.3'
 }
 
 tasks.named('test') {
