@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ProductCompositeService {
     @Operation(
             summary = "${api.product-composite.get-composite-product.description}",
-            description = "${api.product-composite.get-composite-product.dnotes}"
+            description = "${api.product-composite.get-composite-product.notes}"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
