@@ -46,7 +46,6 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 				.jsonPath("$[2].recommendationId").isEqualTo(3);
 	}
 
-/*
 	@Test
 	void duplicateError() {
 		int productId = 1;
@@ -78,7 +77,6 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 
 		deleteAndVerifyRecommendationsByProductId(productId, OK);
 	}
-*/
 
 	@Test
 	void getRecommendationsMissingParameter() {

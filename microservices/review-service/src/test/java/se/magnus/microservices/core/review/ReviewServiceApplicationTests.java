@@ -51,7 +51,6 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
 				.jsonPath("$[2].reviewId").isEqualTo(3);
 	}
 
-/*
 	@Test
 	void duplicateError() {
 
@@ -87,7 +86,6 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
 
 		deleteAndVerifyReviewsByProductId(productId, OK);
 	}
-*/
 
 	@Test
 	void getReviewsMissingParameter() {

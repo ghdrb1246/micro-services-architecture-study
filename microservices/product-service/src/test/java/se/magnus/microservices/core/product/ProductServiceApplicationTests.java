@@ -41,7 +41,7 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
 
 		getAndVerifyProduct(productId, OK).jsonPath("$.productId").isEqualTo(productId);
 	}
-/*
+
 	@Test
 	void duplicateError() {
 		int productId = 1;
@@ -67,7 +67,6 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
 
 		deleteAndVerifyProduct(productId, OK);
 	}
-	*/
 
 	@Test
 	void getProductInvalidParameterString() {
