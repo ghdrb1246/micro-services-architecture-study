@@ -1,13 +1,16 @@
 package se.magnus.microservices.core.product.persistence;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-@Data
+@Getter
+@Setter
 @Document(collection = "products")
 public class ProductEntity {
     @Id
@@ -21,4 +24,10 @@ public class ProductEntity {
 
     private String name;
     private int weight;
+
+    public ProductEntity(int productId, String name, int weight) {
+        this.productId = productId;
+        this.name = name;
+        this.weight = weight;
+    }
 }

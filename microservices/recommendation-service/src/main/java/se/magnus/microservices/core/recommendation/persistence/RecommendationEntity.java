@@ -1,14 +1,17 @@
 package se.magnus.microservices.core.recommendation.persistence;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
-@Document(collation = "Recommendations")
-@CompoundIndex(name = "prod-rec-id", unique = true, def = "{'productId' : 1, 'recommendationId' : 1}")
+@Getter
+@Setter
+@Document(collection = "recommendations")
+@CompoundIndex(name = "prod-rec-id", unique = true, def = "{'productId': 1, 'recommendationId' : 1}")
 public class RecommendationEntity {
     @Id
     private String id;
@@ -21,4 +24,12 @@ public class RecommendationEntity {
     private String author;
     private int rating;
     private String content;
+
+    public RecommendationEntity(int productId, int recommendationId, String author, int rating, String content) {
+        this.productId = productId;
+        this.recommendationId = recommendationId;
+        this.author = author;
+        this.rating = rating;
+        this.content = content;
+    }
 }
