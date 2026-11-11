@@ -65,7 +65,7 @@ class PersistenceTests extends MongoDbTestBase {
 
     @Test
     void getByProductId() {
-        Optional<ProductEntity> entity = repository.findByProductId(savedEntity.getProductId());
+        Optional<ProductEntity> entity = repository.findByProductId(savedEntity.getProductId()).blockOptional();
 
         assertTrue(entity.isPresent());
         assertEqualsProduct(savedEntity, entity.get());
