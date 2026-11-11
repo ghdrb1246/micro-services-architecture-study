@@ -17,6 +17,8 @@ import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTest
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import se.magnus.api.composite.product.ProductAggregate;
 import se.magnus.api.composite.product.RecommendationSummary;
 import se.magnus.api.composite.product.ReviewSummary;
@@ -43,17 +45,13 @@ class ProductCompositeServiceApplicationTests {
 	@BeforeEach
 	void setUp() {
 		when(compositeIntegration.getProduct(PRODUCT_ID_OK))
-				.thenReturn(new Product(PRODUCT_ID_OK, "name", 1, "mock-address"));
+				.thenReturn(Mono.just(new Product(PRODUCT_ID_OK, "name", 1, "mock-address")));
 		when(compositeIntegration.getRecommendations(PRODUCT_ID_OK))
-				.thenReturn(singletonList(new Recommendation(PRODUCT_ID_OK, 1, "author", 1, "content", "mock address")));
+				.thenReturn(Flux.fromIterable(singletonList(new Recommendation(PRODUCT_ID_OK, 1, "author", 1, "content", "mock address"))));
 		when(compositeIntegration.getReviews(PRODUCT_ID_OK))
-				.thenReturn(singletonList(new Review(PRODUCT_ID_OK, 1, "author", "subject", "content", "mock address")));
-
-		when(compositeIntegration.getProduct(PRODUCT_ID_NOT_FOUND))
-				.thenThrow(new NotFoundException("NOT FOUND: " + PRODUCT_ID_NOT_FOUND));
-
-		when(compositeIntegration.getProduct(PRODUCT_ID_INVALID))
-				.thenThrow(new InvalidInputException("INVALID: " + PRODUCT_ID_INVALID));
+				.thenReturn(Flux.fromIterable(singletonList(new Review(PRODUCT_ID_OK, 1, "author", "subject", "content", "mock address"))));
+		when(compositeIntegration.getProduct(PRODUCT_ID_NOT_FOUND)).thenThrow(new NotFoundException("NOT FOUND: " + PRODUCT_ID_NOT_FOUND));
+		when(compositeIntegration.getProduct(PRODUCT_ID_INVALID)).thenThrow(new InvalidInputException("INVALID: " + PRODUCT_ID_INVALID));
 	}
 
 	@Test
