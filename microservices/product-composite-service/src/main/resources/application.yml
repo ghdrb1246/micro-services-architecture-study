@@ -79,19 +79,20 @@ spring.cloud.stream.output-bindings: products-out-0;recommendations-out-0;review
 spring.cloud.stream:
   defaultBinder: rabbit
   default.contentType: application/json
+# P-299
   bindings:
     products-out-0:
       destination: products
       producer:
-        required-groups: auditGroup
+        required-groups: [auditGroup]
     recommendations-out-0:
       destination: recommendations
       producer:
-        required-groups: auditGroup
+        required-groups: [auditGroup]
     reviews-out-0:
       destination: reviews
       producer:
-        required-groups: auditGroup
+        required-groups: [auditGroup]
 
 spring.cloud.stream.kafka.binder:
   brokers: 127.0.0.1
