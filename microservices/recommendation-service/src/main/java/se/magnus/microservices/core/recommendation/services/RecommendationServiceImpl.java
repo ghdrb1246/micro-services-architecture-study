@@ -29,6 +29,9 @@ public class RecommendationServiceImpl implements RecommendationService {
         this.serviceUtil = serviceUtil;
     }
 
+    // ------
+    // P-210 - 서비스 구현 변경
+    // Mongo DB
     @Override
     public Mono<Recommendation> createRecommendation(Recommendation body) {
         RecommendationEntity entity = mapper.apiToEntity(body);
@@ -41,6 +44,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         return newEntity;
     }
+    // ------
 
     @Override
     public Flux<Recommendation> getRecommendations(int productId) {

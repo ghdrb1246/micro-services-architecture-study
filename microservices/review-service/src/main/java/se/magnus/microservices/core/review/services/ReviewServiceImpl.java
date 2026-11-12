@@ -33,6 +33,9 @@ public class ReviewServiceImpl implements ReviewService {
         this.serviceUtil = serviceUtil;
     }
 
+    // ------
+    // P-210 - 서비스 구현 변경
+    // MySQL
     @Override
     public Mono<Review> createReview(Review body) {
         if (body.getProductId() < 1) {
@@ -40,7 +43,8 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return Mono.fromCallable(() -> internalCreateReview(body))
             .subscribeOn(jdbcScheduler);
-     }
+    }
+    // ------
 
     private Review internalCreateReview(Review body) {
         try {

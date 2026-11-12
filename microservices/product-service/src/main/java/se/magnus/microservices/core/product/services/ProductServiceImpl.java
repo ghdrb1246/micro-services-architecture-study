@@ -28,7 +28,9 @@ public class ProductServiceImpl implements ProductService {
         this.serviceUtil = serviceUtil;
     }
 
-
+    // ------
+    // P-210 - 서비스 구현 변경
+    // Mongo DB
     @Override
     public Mono<Product> createProduct(Product body) {
         if (body.getProductId() < 1) {
@@ -45,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
         return newEntity;
     }
+    // ------
 
     @Override
     public Mono<Product> getProduct(int productId) {
