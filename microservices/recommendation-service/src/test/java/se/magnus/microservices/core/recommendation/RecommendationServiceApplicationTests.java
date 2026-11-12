@@ -32,9 +32,13 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 	@Autowired
 	private RecommendationRepository repository;
 
+	// ------
+	// P-212 - 테스트 변경
+	// P-211 yml 수정 -> 에러 없어짐
 	@Autowired
 	@Qualifier("messageProcessor")
 	private Consumer<Event<Integer, Recommendation>> messageProcessor;
+	// ------
 
 	@BeforeEach
 	void setupDb() {
@@ -45,9 +49,12 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 	void getRecommendationsByProductId() {
 		int productId = 1;
 
+		// ------
+		// P-212 - 테스트 변경
 		sendCreateRecommendationEvent(productId, 1);
 		sendCreateRecommendationEvent(productId, 2);
 		sendCreateRecommendationEvent(productId, 3);
+		// ------
 
 		assertEquals(3, (long)repository.findByProductId(productId).count().block());
 
@@ -61,14 +68,18 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 	void duplicateError() {
 		int productId = 1;
 		int recommendationId = 1;
-
+		// ------
+		// P-212 - 테스트 변경
 		sendCreateRecommendationEvent(productId, recommendationId);
-
+		// ------
 		assertEquals(1, (long)repository.count().block());
 
 		InvalidInputException thrown = assertThrows(
 				InvalidInputException.class,
+				// ------
+				// P-212 - 테스트 변경
 				() -> sendCreateRecommendationEvent(productId, recommendationId),
+				// ------
 				"Expected a InvalidInputException here!");
 		assertEquals("Duplicate key, Product Id: 1, Recommendation Id:1", thrown.getMessage());
 
@@ -79,14 +90,23 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 	void deleteRecommendations() {
 		int productId = 1;
 		int recommendationId = 1;
-
+		// ------
+		// P-212 - 테스트 변경
 		sendCreateRecommendationEvent(productId, recommendationId);
+		// ------
 		assertEquals(1, (long)repository.findByProductId(productId).count().block());
 
+		// ------
+		// P-212 - 테스트 변경
 		sendDeleteRecommendationEvent(productId);
+		// ------
+
 		assertEquals(0, (long)repository.findByProductId(productId).count().block());
 
+		// ------
+		// P-212 - 테스트 변경
 		sendDeleteRecommendationEvent(productId);
+		// ------
 	}
 
     @Test
@@ -132,6 +152,8 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 				.expectBody();
 	}
 
+	// ------
+	// P-212 - 테스트 변경
 	private void sendCreateRecommendationEvent(int productId, int recommendationId) {
 		Recommendation recommendation = new Recommendation(productId, recommendationId, "Author " + recommendationId, recommendationId, "Content " + recommendationId, "SA");
 		Event<Integer, Recommendation> event = new Event<>(CREATE, productId, recommendation);
@@ -142,4 +164,5 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 		Event<Integer, Recommendation> event = new Event<>(DELETE, productId, null);
 		messageProcessor.accept(event);
 	}
+	// ------
 }

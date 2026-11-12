@@ -31,9 +31,13 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
 	@Autowired
 	private ProductRepository repository;
 
+	// ------
+	// P-212 - 테스트 변경
+	// P-211 yml 수정 -> 에러 없어짐
 	@Autowired
 	@Qualifier("messageProcessor")
 	private Consumer<Event<Integer, Product>> messageProcessor;
+	// ------
 
 	@BeforeEach
 	void setupDb() {
@@ -47,7 +51,10 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
 		assertNull(repository.findByProductId(productId).block());
 		assertEquals(0, (long)repository.count().block());
 
+		// ------
+		// P-212 - 테스트 변경
 		sendCreateProductEvent(productId);
+        // ------
 
 		assertNotNull(repository.findByProductId(productId).block());
 		assertEquals(1, (long)repository.count().block());
@@ -62,7 +69,10 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
 
 		assertNull(repository.findByProductId(productId).block());
 
+		// ------
+		// P-212 - 테스트 변경
 		sendCreateProductEvent(productId);
+		// ------
 
 		assertNotNull(repository.findByProductId(productId).block());
 
@@ -76,14 +86,23 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
     @Test
 	void deleteProduct() {
 		int productId = 1;
-
+		// ------
+		// P-212 - 테스트 변경
 		sendCreateProductEvent(productId);
+		// ------
 		assertNotNull(repository.findByProductId(productId).block());
 
+		// ------
+		// P-212 - 테스트 변경
 		sendDeleteProductEvent(productId);
+		// ------
+
 		assertNull(repository.findByProductId(productId).block());
 
+		// ------
+		// P-212 - 테스트 변경
 		sendDeleteProductEvent(productId);
+		// ------
 	}
 
     @Test
@@ -124,6 +143,8 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
 				.expectBody();
 	}
 
+	// ------
+	// P-212 - 테스트 변경
 	private void sendCreateProductEvent(int productId) {
 		Product product = new Product(productId, "Name " + productId, productId, "SA");
 		Event<Integer, Product> event = new Event<>(CREATE, productId, product);
@@ -134,4 +155,5 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
 		Event<Integer, Product> event = new Event<>(DELETE, productId, null);
 		messageProcessor.accept(event);
 	}
+	// ------
 }
