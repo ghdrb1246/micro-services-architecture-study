@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.health.contributor.Health;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
@@ -46,7 +46,8 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
     private final Scheduler publishEventScheduler;
 
     public ProductCompositeIntegration(
-            @Qualifier("publishEventScheduler") Scheduler publishEventScheduler,
+            @Qualifier("publishEventScheduler")
+            Scheduler publishEventScheduler,
 
             WebClient.Builder webClient,
             ObjectMapper mapper,
@@ -71,10 +72,13 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
         reviewServiceUrl         = "http://" + reviewServiceHost + ":" + reviewServicePort;
     }
 
+    // ------
+    // P-214 통합 서비스에서 이벤트 게시
     @Override
     public Mono<Product> createProduct(Product body) {
         return Mono.fromCallable(() -> {
             sendMessage("products-out-0", new Event<>(CREATE, body.getProductId(), body));
+
             return body;
         }).subscribeOn(publishEventScheduler);
     }
@@ -89,7 +93,6 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
     @Override
     public Mono<Void> deleteProduct(int productId) {
-
         return Mono.fromRunnable(() -> sendMessage("products-out-0", new Event<>(DELETE, productId, null)))
                 .subscribeOn(publishEventScheduler).then();
     }
@@ -141,6 +144,15 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
                 .subscribeOn(publishEventScheduler).then();
     }
 
+    private void sendMessage(String bindingName, Event event) {
+        LOG.debug("Sending a {} message to {}", event.getEventType(), bindingName);
+        Message message = MessageBuilder.withPayload(event)
+                .setHeader("partitionKey", event.getKey())
+                .build();
+        streamBridge.send(bindingName, message);
+    }
+    // ------
+
     public Mono<Health> getProductHealth() {
         return getHealth(productServiceUrl);
     }
@@ -160,14 +172,6 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
                 .map(s -> new Health.Builder().up().build())
                 .onErrorResume(ex -> Mono.just(new Health.Builder().down(ex).build()))
                 .log(LOG.getName(), FINE);
-    }
-
-    private void sendMessage(String bindingName, Event event) {
-        LOG.debug("Sending a {} message to {}", event.getEventType(), bindingName);
-        Message message = MessageBuilder.withPayload(event)
-                .setHeader("partitionKey", event.getKey())
-                .build();
-        streamBridge.send(bindingName, message);
     }
 
     private Throwable handleException(Throwable ex) {
