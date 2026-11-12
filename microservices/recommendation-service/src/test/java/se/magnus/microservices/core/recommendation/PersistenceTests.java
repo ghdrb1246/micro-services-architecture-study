@@ -18,7 +18,6 @@ import se.magnus.microservices.core.recommendation.persistence.RecommendationRep
 
 @DataMongoTest
 class PersistenceTests extends MongoDbTestBase {
-
     @Autowired
     private RecommendationRepository repository;
 
@@ -26,7 +25,7 @@ class PersistenceTests extends MongoDbTestBase {
 
     @BeforeEach
     void setupDb() {
-        repository.deleteAll();
+        repository.deleteAll().block();
 
         RecommendationEntity entity = new RecommendationEntity(1, 2, "a", 3, "c");
         savedEntity = repository.save(entity).block();
@@ -37,18 +36,18 @@ class PersistenceTests extends MongoDbTestBase {
     @Test
     void create() {
         RecommendationEntity newEntity = new RecommendationEntity(1, 3, "a", 3, "c");
-        repository.save(newEntity);
+        repository.save(newEntity).block();
 
         RecommendationEntity foundEntity = repository.findById(newEntity.getId()).block();
         assertEqualsRecommendation(newEntity, foundEntity);
 
-        assertEquals(2, repository.count());
+        assertEquals(2, repository.count().block());
     }
 
     @Test
     void update() {
         savedEntity.setAuthor("a2");
-        repository.save(savedEntity);
+        repository.save(savedEntity).block();
 
         RecommendationEntity foundEntity = repository.findById(savedEntity.getId()).block();
         assertEquals(1, (long)foundEntity.getVersion());
@@ -57,7 +56,7 @@ class PersistenceTests extends MongoDbTestBase {
 
     @Test
     void delete() {
-        repository.delete(savedEntity);
+        repository.delete(savedEntity).block();
         assertFalse(repository.existsById(savedEntity.getId()).block());
     }
 
@@ -73,7 +72,7 @@ class PersistenceTests extends MongoDbTestBase {
     void duplicateError() {
         assertThrows(DuplicateKeyException.class, () -> {
             RecommendationEntity entity = new RecommendationEntity(1, 2, "a", 3, "c");
-            repository.save(entity);
+            repository.save(entity).block();
         });
     }
 
@@ -83,11 +82,11 @@ class PersistenceTests extends MongoDbTestBase {
         RecommendationEntity entity2 = repository.findById(savedEntity.getId()).block();
 
         entity1.setAuthor("a1");
-        repository.save(entity1);
+        repository.save(entity1).block();
 
         assertThrows(OptimisticLockingFailureException.class, () -> {
             entity2.setAuthor("a2");
-            repository.save(entity2);
+            repository.save(entity2).block();
         });
 
         RecommendationEntity updatedEntity = repository.findById(savedEntity.getId()).block();

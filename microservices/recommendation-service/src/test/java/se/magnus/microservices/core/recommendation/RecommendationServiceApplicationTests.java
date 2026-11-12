@@ -42,7 +42,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 
 	@BeforeEach
 	void setupDb() {
-		repository.deleteAll();
+		repository.deleteAll().block();
 	}
 
 	@Test

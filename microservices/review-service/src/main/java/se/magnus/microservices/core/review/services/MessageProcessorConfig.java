@@ -3,6 +3,7 @@ package se.magnus.microservices.core.review.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import se.magnus.api.core.review.Review;
 import se.magnus.api.core.review.ReviewService;
 import se.magnus.api.event.Event;
@@ -10,6 +11,7 @@ import se.magnus.api.exceptions.EventProcessingException;
 
 import java.util.function.Consumer;
 
+@Configuration
 public class MessageProcessorConfig {
     private static final Logger LOG = LoggerFactory.getLogger(MessageProcessorConfig.class);
     private final ReviewService reviewService;

@@ -5,8 +5,8 @@ import static reactor.core.publisher.Flux.empty;
 import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -153,6 +153,8 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
     }
     // ------
 
+    // ------
+    // P-220 - 상태 API 추가
     public Mono<Health> getProductHealth() {
         return getHealth(productServiceUrl);
     }
@@ -173,6 +175,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
                 .onErrorResume(ex -> Mono.just(new Health.Builder().down(ex).build()))
                 .log(LOG.getName(), FINE);
     }
+    // ------
 
     private Throwable handleException(Throwable ex) {
 
@@ -188,7 +191,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
             case NOT_FOUND:
                 return new NotFoundException(getErrorMessage(wcre));
 
-            case UNPROCESSABLE_ENTITY:
+            case UNPROCESSABLE_CONTENT:
                 return new InvalidInputException(getErrorMessage(wcre));
 
             default:
@@ -201,7 +204,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
     private String getErrorMessage(WebClientResponseException ex) {
         try {
             return mapper.readValue(ex.getResponseBodyAsString(), HttpErrorInfo.class).getMessage();
-        } catch (IOException ioex) {
+        } catch (JacksonException je) {
             return ex.getMessage();
         }
     }
