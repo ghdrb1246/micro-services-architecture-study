@@ -109,6 +109,7 @@ logging:
     root: INFO
     se.magnus: DEBUG
 
+# P-222
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 
