@@ -37,6 +37,10 @@ import se.magnus.util.http.HttpErrorInfo;
 public class ProductCompositeIntegration implements ProductService, RecommendationService, ReviewService {
     private static final Logger LOG = LoggerFactory.getLogger(ProductCompositeIntegration.class);
 
+    private static final String PRODUCT_SERVICE_URL = "http://product";
+    private static final String RECOMMENDATION_SERVICE_URL = "http://recommendation";
+    private static final String REVIEW_SERVICE_URL = "http://review";
+
     private final WebClient webClient;
     private final ObjectMapper mapper;
     private final String productServiceUrl;
