@@ -23,7 +23,7 @@ import se.magnus.microservices.core.product.persistence.ProductRepository;
 import java.util.function.Consumer;
 
 @AutoConfigureWebTestClient
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"eureka.client.enabled=false"})
 class ProductServiceApplicationTests extends MongoDbTestBase {
     @Autowired
 	private WebTestClient client;

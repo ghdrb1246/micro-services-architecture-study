@@ -24,7 +24,7 @@ import se.magnus.microservices.core.recommendation.persistence.RecommendationRep
 import java.util.function.Consumer;
 
 @AutoConfigureWebTestClient
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"eureka.client.enabled=false"})
 class RecommendationServiceApplicationTests extends MongoDbTestBase {
     @Autowired
 	private WebTestClient client;
