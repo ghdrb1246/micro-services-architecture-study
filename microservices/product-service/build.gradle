@@ -57,6 +57,8 @@ dependencies {
 	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-binder'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
 dependencyManagement {
