@@ -17,9 +17,7 @@ import reactor.core.publisher.Mono;
 
 @Configuration
 public class HealthCheckConfiguration {
-
     private static final Logger LOG = LoggerFactory.getLogger(HealthCheckConfiguration.class);
-
     private WebClient webClient;
 
     public HealthCheckConfiguration(WebClient.Builder webClientBuilder) {
@@ -47,5 +45,4 @@ public class HealthCheckConfiguration {
                 .onErrorResume(ex -> Mono.just(new Health.Builder().down(ex).build()))
                 .log(LOG.getName(), FINE);
     }
-
 }
