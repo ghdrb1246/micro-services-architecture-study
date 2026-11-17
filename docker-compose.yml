@@ -88,6 +88,10 @@ services:
   gateway:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+#      - SERVER_SSLBUNDLE_JKS_GATEWAY_KEYSTORE_LOCATION=
+#      - SERVER_SSLBUNDLE_JKS_GATEWAY_KEYSTORE_PASSWORD=
+#    volumes:
+#      - $PWD/keystore:/keystore
     build: spring-cloud/gateway
     mem_limit: 512m
     ports:
