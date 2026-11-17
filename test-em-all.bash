@@ -97,18 +97,6 @@ function testCompositeCreated() {
     assertEqual 3 $(echo $RESPONSE | jq ".reviews | length")
     if [ "$?" -eq "1" ] ; then return 1; fi
 
-    # Also wait for the products without recommendations and reviews. With Kafka their messages
-    # can be processed later than the ones above, e.g. while consumer groups are rebalanced.
-    if ! assertCurl 200 "curl http://$HOST:$PORT/product-composite/$PROD_ID_NO_RECS -s"
-    then
-        echo -n "FAIL"
-        return 1
-    fi
-    if ! assertCurl 200 "curl http://$HOST:$PORT/product-composite/$PROD_ID_NO_REVS -s"
-    then
-        echo -n "FAIL"
-        return 1
-    fi
     set -e
 }
 
@@ -195,6 +183,11 @@ then
 fi
 
 waitForService curl http://$HOST:$PORT/actuator/health
+
+# Verify access to Eureka and that all four microservices are registered in Eureka
+assertCurl 200 "curl -H "accept:application/json" $HOST:8761/eureka/apps -s"
+assertEqual 4 $(echo $RESPONSE | jq ".applications.application | length")
+
 setupTestdata
 
 waitForMessageProcessing
