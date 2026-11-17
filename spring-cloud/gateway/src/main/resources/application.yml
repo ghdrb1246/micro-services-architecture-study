@@ -14,7 +14,9 @@ spring.ssl.bundle.jks.gateway:
 
 server.ssl.bundle: gateway
 
-app.eureka-server: localhost
+app:
+  eureka-username: u
+  eureka-password: p
 
 eureka:
   client:
