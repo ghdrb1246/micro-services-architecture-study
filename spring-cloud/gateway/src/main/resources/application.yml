@@ -70,7 +70,7 @@ spring.cloud.gateway.server.webflux.routes:
     filters:
       - SetPath=/status/501
 
-management.endpoint.gateway.enabled: true
+management.endpoint.gateway.access: unrestricted
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 

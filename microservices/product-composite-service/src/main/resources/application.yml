@@ -4,6 +4,8 @@ springdoc:
   packagesToScan: se.magnus.microservices.composite.product
   pathsToMatch: /**
 
+  server.forward-headers-strategy: framework
+
 api:
   common:
     version: 1.0.0
