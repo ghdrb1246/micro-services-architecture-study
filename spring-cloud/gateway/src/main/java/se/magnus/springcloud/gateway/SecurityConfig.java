@@ -23,7 +23,12 @@ public class SecurityConfig {
                                 .pathMatchers("/oauth2/**").permitAll()
                                 .pathMatchers("/login/**").permitAll()
                                 .pathMatchers("/error/**").permitAll()
+
+                                // -------------
+                                // P309
                                 .pathMatchers("/openapi/**").permitAll()
+                                // -------------
+
                                 .anyExchange().authenticated()))
                 .oauth2ResourceServer(server -> server
                         .jwt(Customizer.withDefaults()));
