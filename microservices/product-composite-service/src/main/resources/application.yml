@@ -111,10 +111,13 @@ spring.rabbitmq:
   username: guest
   password: guest
 
+spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.auth-server}:9999
+
 logging:
   level:
     root: INFO
     se.magnus: DEBUG
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
 
 # P-222
 management.endpoint.health.show-details: "ALWAYS"
@@ -125,7 +128,9 @@ management.endpoints.web.exposure.include: "*"
 spring.config.activate.on-profile: docker
 server.port: 8080
 
-app.eureka-server: eureka
+app:
+  eureka-server: eureka
+  auth-server: auth-server
 
 spring.rabbitmq.host: rabbitmq
 spring.cloud.stream.kafka.binder.brokers: kafka
