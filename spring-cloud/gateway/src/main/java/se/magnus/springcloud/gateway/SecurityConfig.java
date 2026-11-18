@@ -1,4 +1,3 @@
-
 package se.magnus.springcloud.gateway;
 
 import org.springframework.context.annotation.Bean;
@@ -8,6 +7,8 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+// ------
+// P305
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
@@ -28,5 +29,5 @@ public class SecurityConfig {
                         .jwt(Customizer.withDefaults()));
         return http.build();
     }
-
 }
+// ------
