@@ -16,6 +16,11 @@ public class SecurityConfig {
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
                 .authorizeExchange(exchange -> exchange
+                        // -------------
+                        // P308
+                        .pathMatchers("/openapi/**").permitAll()
+                        // -------------
+
                         .pathMatchers("/actuator/**").permitAll()
 
                         // -------------
