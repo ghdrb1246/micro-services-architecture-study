@@ -89,7 +89,6 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
                 .log(LOG.getName(), FINE);
     }
 
-
     @Override
     public Mono<Void> deleteProduct(int productId) {
         try {
