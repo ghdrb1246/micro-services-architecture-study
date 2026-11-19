@@ -10,7 +10,7 @@ spring.ssl.bundle.jks.gateway:
   keystore:
     type: PKCS12
     location: classpath:keystore/edge.p12
-    password: password
+    password: testtest
 
 server.ssl.bundle: gateway
 
