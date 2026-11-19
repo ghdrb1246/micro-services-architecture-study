@@ -29,6 +29,7 @@ public class SecurityConfig {
                                 .pathMatchers("/openapi/**").permitAll()
                                 // -------------
 
+                                .pathMatchers("/config/**").permitAll()
                                 .anyExchange().authenticated()))
                 .oauth2ResourceServer(server -> server
                         .jwt(Customizer.withDefaults()));

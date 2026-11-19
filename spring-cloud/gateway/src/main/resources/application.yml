@@ -76,6 +76,13 @@ spring.cloud.gateway.server.webflux.routes:
     predicates:
       - Path=/eureka/**
 
+  - id: config-server
+    uri: ${spring.cloud.config.uri}
+    predicates:
+      - Path=/config/**
+    filters:
+      - RewritePath=/config/(?<segment>.*), /$\{segment}
+      -
   - id: host_route_200
     uri: https://httpbin.org
     predicates:
