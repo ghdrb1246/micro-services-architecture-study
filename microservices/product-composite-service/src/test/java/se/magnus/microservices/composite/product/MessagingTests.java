@@ -37,7 +37,9 @@ import se.magnus.api.event.Event;
 @AutoConfigureWebTestClient
 @SpringBootTest(
         webEnvironment = RANDOM_PORT,
-        properties = {"spring.main.allow-bean-definition-overriding=true"})
+        classes = {TestSecurityConfig.class},
+        properties = {"spring.main.allow-bean-definition-overriding=true"}
+)
 @Import({TestChannelBinderConfiguration.class})
 class MessagingTests {
     private static final Logger LOG = LoggerFactory.getLogger(MessagingTests.class);

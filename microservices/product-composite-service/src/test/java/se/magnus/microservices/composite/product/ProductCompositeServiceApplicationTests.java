@@ -29,7 +29,11 @@ import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.microservices.composite.product.services.ProductCompositeIntegration;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"eureka.client.enabled=false"})
+@SpringBootTest(
+		webEnvironment = RANDOM_PORT,
+		classes = {TestSecurityConfig.class},
+		properties = {"spring.main.allow-bean-definition-overriding=true"}
+)
 @AutoConfigureWebTestClient
 class ProductCompositeServiceApplicationTests {
 	private static final int PRODUCT_ID_OK = 1;
