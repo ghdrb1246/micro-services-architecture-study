@@ -30,6 +30,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-security-oauth2-authorization-server-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'org.springframework.boot:spring-boot-starter-restclient'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.cloud:spring-cloud-config-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+	implementation 'org.springframework.boot:spring-boot-starter-aspectj'
+	implementation 'org.springframework.retry:spring-retry'
 }
 
 dependencyManagement {
