@@ -9,7 +9,9 @@ spring.ssl.bundle.jks.gateway:
   keystore:
     type: PKCS12
     location: classpath:keystore/edge.p12
-    password: '{cipher}d59274473b196cebe288f849c442eba34aa497d14a13e10a23f824489e1c23ec'
+    # resources/keystore/edge.p12 비번은 다름 확인 필.
+    # > docker compose exec config-server sh -c 'wget -qO- --user "$SPRING_SECURITY_USER_NAME" --password "$SPRING_SECURITY_USER_PASSWORD" --header="Content-Type: text/plain" --post-data=testtest http://localhost:8888/encrypt'
+    password: '{cipher}a1695183d008e7cca8e91faad8e2856a2e44fdf728795f9e4a3614e32b443990'
 
 server.ssl.bundle: gateway
 
