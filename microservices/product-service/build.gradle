@@ -66,6 +66,11 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 	implementation 'org.springframework.boot:spring-boot-starter-aspectj'
 	implementation 'org.springframework.retry:spring-retry'
+
+	implementation 'org.springframework.boot:spring-boot-micrometer-tracing-opentelemetry'
+	implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+	implementation 'org.springframework.boot:spring-boot-zipkin'
+	implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
 }
 
 dependencyManagement {
