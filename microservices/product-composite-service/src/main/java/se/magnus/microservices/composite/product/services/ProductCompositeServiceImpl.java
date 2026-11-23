@@ -13,11 +13,13 @@ import se.magnus.api.composite.product.*;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.core.review.Review;
+import se.magnus.microservices.composite.product.services.tracing.ObservationUtil;
 import se.magnus.util.http.ServiceUtil;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static java.util.logging.Level.FINE;
@@ -27,23 +29,29 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
     private static final Logger LOG = LoggerFactory.getLogger(ProductCompositeServiceImpl.class);
     private final ServiceUtil serviceUtil;
     private final ProductCompositeIntegration integration;
-
     private final SecurityContext nullSecCtx = new SecurityContextImpl();
+    private final ObservationUtil observationUtil;
 
     public ProductCompositeServiceImpl(
             ServiceUtil serviceUtil,
-            ProductCompositeIntegration integration) {
-
+            ObservationUtil observationUtil,
+            ProductCompositeIntegration integration
+    ) {
         this.serviceUtil = serviceUtil;
+        this.observationUtil = observationUtil;
         this.integration = integration;
     }
 
     @Override
     public Mono<Void> createProduct(ProductAggregate body) {
+        return observationWithProductInfo(body.getProductId(), () -> createProductInternal(body));
+    }
+
+    private Mono<Void> createProductInternal(ProductAggregate body) {
         try {
             List<Mono> monoList = new ArrayList<>();
             monoList.add(getLogAuthorizationInfoMono());
-            
+
             LOG.info("Will create a new composite entity for product.id: {}", body.getProductId());
 
             Product product = new Product(body.getProductId(), body.getName(), body.getWeight(), null);
@@ -75,9 +83,13 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Mono<ProductAggregate> getProduct(int productId, int delay, int faultPercent) {
+        return observationWithProductInfo(productId, () -> getProductInternal(productId, delay, faultPercent));
+    }
+
+    private Mono<ProductAggregate> getProductInternal(int productId, int delay, int faultPercent) {
         LOG.info("Will get composite product info for product.id={}", productId);
+
         return Mono.zip(
                         values -> createProductAggregate(
                                 (SecurityContext) values[0], (Product) values[1], (List<Recommendation>) values[2], (List<Review>) values[3], serviceUtil.getServiceAddress()),
@@ -91,6 +103,10 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
     @Override
     public Mono<Void> deleteProduct(int productId) {
+        return observationWithProductInfo(productId, () -> deleteProductInternal(productId));
+    }
+
+    private Mono<Void> deleteProductInternal(int productId) {
         try {
             LOG.info("Will delete a product aggregate for product.id: {}", productId);
 
@@ -108,6 +124,15 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
             LOG.warn("deleteCompositeProduct failed: {}", re.toString());
             throw re;
         }
+    }
+
+    private <T> T observationWithProductInfo(int productInfo, Supplier<T> supplier) {
+        return observationUtil.observe(
+                "composite observation",
+                "product info",
+                "productId",
+                String.valueOf(productInfo),
+                supplier);
     }
 
     private ProductAggregate createProductAggregate(SecurityContext sc, Product product, List<Recommendation> recommendations, List<Review> reviews, String serviceAddress) {
