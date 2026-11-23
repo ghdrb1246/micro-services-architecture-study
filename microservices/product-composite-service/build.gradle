@@ -26,6 +26,10 @@ jar {
 	enabled = false
 }
 
+springBoot {
+	buildInfo()
+}
+
 dependencies {
 	implementation project(':api')
 	implementation project(':util')
