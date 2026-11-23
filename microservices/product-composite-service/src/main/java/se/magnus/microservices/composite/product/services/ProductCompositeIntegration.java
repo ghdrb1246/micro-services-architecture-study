@@ -16,7 +16,6 @@ import tools.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.health.contributor.Health;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
@@ -59,13 +58,13 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
             @Qualifier("publishEventScheduler")
             Scheduler publishEventScheduler,
 
-            WebClient.Builder webClient,
+            WebClient webClient,
             ObjectMapper mapper,
             StreamBridge streamBridge,
             ServiceUtil serviceUtil
     ) {
         this.publishEventScheduler = publishEventScheduler;
-        this.webClient = webClient.build();
+        this.webClient = webClient;
         this.mapper = mapper;
         this.streamBridge = streamBridge;
         this.serviceUtil = serviceUtil;
