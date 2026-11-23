@@ -21,6 +21,10 @@ ext {
 	set('springCloudVersion', "2025.1.4")
 }
 
+jar {
+	enabled = false
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-security'

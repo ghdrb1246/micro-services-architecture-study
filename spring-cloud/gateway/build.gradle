@@ -21,6 +21,10 @@ ext {
 	set('springCloudVersion', "2025.1.4")
 }
 
+jar {
+	enabled = false
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux'
@@ -43,6 +47,8 @@ dependencies {
 	implementation 'io.micrometer:micrometer-tracing-bridge-otel'
 	implementation 'org.springframework.boot:spring-boot-zipkin'
 	implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
+
+	implementation 'org.springframework.boot:spring-boot-starter-webclient'
 }
 
 dependencyManagement {
